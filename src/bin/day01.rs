@@ -1,47 +1,52 @@
-use advent_of_code_2019::read_by_line;
+use advent_of_code_2020::read_by_line;
+
 fn main() {
     let file_name = "inputs/day01.txt";
-    let masses: Vec<usize> = read_by_line(file_name).unwrap();
-    let mut total_fuel_part_1 = 0;
-    let mut total_fuel_part_2 = 0;
-    for mass in masses {
-        total_fuel_part_1 += get_fuel_from_mass(mass).unwrap_or(0);
-        total_fuel_part_2 += get_fuel_from_mass_part_2(mass);
+    let expenses: Vec<usize> = read_by_line(file_name).unwrap();
+    match solve_part_one(&expenses) {
+        Some(ans) => println!("Answer to part one is: {}", ans),
+        None => println!("No answer found for part one"),
     }
-    println!("Part 1 total fuel: {}", total_fuel_part_1);
-    println!("Part 2 total fuel: {}", total_fuel_part_2);
+    match solve_part_two(&expenses) {
+        Some(ans) => println!("Answer to part two is: {}", ans),
+        None => println!("No answer found for part two"),
+    }
 }
 
-fn get_fuel_from_mass(mass: usize) -> Option<usize> {
-    // take its mass, divide by three, round down, and subtract 2.
-    ((mass as f64 / 3.0).floor() as usize).checked_sub(2)
-}
-
-fn get_fuel_from_mass_part_2(mass: usize) -> usize {
-    let mut total_fuel: usize = 0;
-    let mut current_mass: usize = mass;
-    while current_mass > 0 {
-        match get_fuel_from_mass(current_mass) {
-            Some(fuel) => {
-                total_fuel += fuel;
-                current_mass = fuel as usize;
-                fuel
+fn solve_part_one(expenses: &[usize]) -> Option<usize> {
+    for i in 0..expenses.len() {
+        for j in 0..expenses.len() {
+            if expenses[i] + expenses[j] == 2020 {
+                return Some(expenses[i] * expenses[j]);
             }
-            None => break,
-        };
+        }
     }
-    total_fuel
+    None
+}
+
+fn solve_part_two(expenses: &[usize]) -> Option<usize> {
+    for i in 0..expenses.len() {
+        for j in 0..expenses.len() {
+            for k in 0..expenses.len() {
+                if expenses[i] + expenses[j] + expenses[k] == 2020 {
+                    return Some(expenses[i] * expenses[j] * expenses[k]);
+                }
+            }
+        }
+    }
+    None
 }
 
 #[test]
-fn can_find_fuel_given_mass() {
-    assert_eq!(get_fuel_from_mass(12), Some(2));
-    assert_eq!(get_fuel_from_mass(100756), Some(33583));
+fn can_solve_part_one() {
+    let file_name = "inputs/day01.txt";
+    let expenses: Vec<usize> = read_by_line(file_name).unwrap();
+    assert_eq!(solve_part_one(&expenses), Some(1009899));
 }
 
 #[test]
-fn can_find_true_fuel_given_mass() {
-    assert_eq!(get_fuel_from_mass_part_2(14), 2);
-    assert_eq!(get_fuel_from_mass_part_2(1969), 966);
-    assert_eq!(get_fuel_from_mass_part_2(100756), 50346);
+fn can_solve_part_two() {
+    let file_name = "inputs/day01.txt";
+    let expenses: Vec<usize> = read_by_line(file_name).unwrap();
+    assert_eq!(solve_part_two(&expenses), Some(44211152));
 }

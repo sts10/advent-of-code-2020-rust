@@ -58,10 +58,10 @@ pub fn split_and_vectorize<'a>(string_to_split: &'a str, splitter: &str) -> Vec<
 #[test]
 fn can_read_integers_from_file() {
     let file_name = "inputs/day01.txt";
-    let masses: Vec<usize> = read_by_line(file_name).unwrap();
+    let expenses: Vec<usize> = read_by_line(file_name).unwrap();
 
-    assert_eq!(masses[2], 105685);
-    assert_eq!(masses[4], 133339);
+    assert_eq!(expenses[2], 1703);
+    assert_eq!(expenses[4], 1809);
 }
 
 #[test]
