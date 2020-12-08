@@ -1,0 +1,13 @@
+# Advent of Code 2020, in Rust
+
+**My solutions to [Advent of Code 2020](https://adventofcode.com/2020), which I'm doing in Rust.**
+
+## How this repo is organized
+
+The code for each day's challenge (1 through, hopefully-but-probably-not-all-the-way-to, 25) is in a Rust executable in `src/bin`. Thus the code for, say, Day 2's executable is located in `src/bin/day02.rs`. To run the Day 2 executable, from the root directory run `cargo run --bin day02`. To run tests, if there are any, run `cargo test --bin day02`.
+
+The input for each challenge is located in `inputs` and named by the day (so for example, `inputs/day02.txt`).
+
+## Some useful helper functions
+
+A lot of the Advent of Code puzzles require similar file-reading and parsing tasks. I put some of the more useful functions I've used over the years in `src/lib.rs`, including some basic tests. Feel free to submit pull requests or issues related to them, or copy them over to your AoC project!
