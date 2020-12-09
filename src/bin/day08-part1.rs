@@ -26,12 +26,14 @@ fn main() {
                 .unwrap();
         println!("About to execute {} {}", operation, argument);
         my_head = execute(operation, argument, my_head);
-        println!("Current position is {}", my_head.current_position);
-        println!("Accumulator is {}", my_head.accumulator);
         if my_head
             .trail_of_positions
             .contains(&(my_head.current_position as usize))
         {
+            println!(
+                "The accumulator at this juncture, and thus answer to part 1 is {}",
+                my_head.accumulator
+            );
             break;
         }
     }
