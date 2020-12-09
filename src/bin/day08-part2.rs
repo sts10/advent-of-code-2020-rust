@@ -32,10 +32,10 @@ fn main() {
         my_head = execute(operation, argument, my_head);
         println!("Current position is {}", my_head.current_position);
         println!("Accumulator is {}", my_head.accumulator);
-        if does_this_loop_infinitely_if_next_instruction_is_switched(&instructions, &my_head) {
-            println!("why don't I make it here?");
-            let ans2 = finish_this_program(&instructions, &my_head);
-            println!("Answer to part 2 is {}", ans2);
+        if does_this_loop_infinitely_if_next_instruction_is_switched(&instructions, &my_head)
+            == false
+        {
+            println!("Answer to part 2 is the accumulator printed above this line (lol)");
             break;
         }
     }
@@ -61,7 +61,7 @@ fn does_this_loop_infinitely_if_next_instruction_is_switched(
             first_time = false;
             "nop".to_string()
         } else {
-            // first_time = false;
+            first_time = false;
             operation
         };
 
@@ -88,7 +88,8 @@ fn does_this_loop_infinitely_if_next_instruction_is_switched(
     }
 }
 
-fn finish_this_program(instructions: &[String], my_head: &Head) -> isize {
+// thought i'd need to  use this??
+fn _finish_this_program(instructions: &[String], my_head: &Head) -> isize {
     println!(
         "Made it to finish_this_program. Acc is {}",
         my_head.accumulator
