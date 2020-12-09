@@ -1,6 +1,6 @@
 # Advent of Code 2020, in Rust
 
-**My solutions to [Advent of Code 2020](https://adventofcode.com/2020), which I'm doing in Rust.**
+This repo contains the solutions to [Advent of Code 2020](https://adventofcode.com/2020) that I chose to do in **Rust**. I [started out trying to do this year's calendar in Go](https://github.com/sts10/advent-of-code-2020/), but I switched back to Rust at day 8 (which is what this repo contains).
 
 ## How this repo is organized
 
