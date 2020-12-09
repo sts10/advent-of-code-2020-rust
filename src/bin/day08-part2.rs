@@ -18,41 +18,38 @@ fn main() {
 
     loop {
         let cp = my_head.current_position as usize;
-        // if cp >= instructions.len() {
-        //     println!("Here");
-        //     finish_this_program(&instructions, &my_head);
-        //     break;
-        // }
         let operation = split_and_vectorize(&instructions[cp], " ")[0].to_string();
         let argument: isize =
             split_and_vectorize(&instructions[my_head.current_position as usize], " ")[1]
                 .parse()
                 .unwrap();
-        println!("About to execute {} {}", operation, argument);
+
         my_head = execute(operation, argument, my_head);
-        println!("Current position is {}", my_head.current_position);
-        println!("Accumulator is {}", my_head.accumulator);
-        if does_this_loop_infinitely_if_next_instruction_is_switched(&instructions, &my_head)
-            == false
-        {
-            println!("Answer to part 2 is the accumulator printed above this line (lol)");
-            break;
-        }
+
+        match accumulator_produced_by_altered_instructions_if_terminates(&instructions, &my_head) {
+            // If Some(accumulator) is returned, that means that altering the instructions at this
+            // juncture DOES produce a successfully terminating set of instructions
+            Some(accumulator) => {
+                // Print the accumulator, since that's what aprt 2 asks for
+                println!("Answer to part 2 is {}", accumulator);
+                // then break, cuz we are DONE
+                break;
+            }
+            // Altering the instructions at this juncture produces an infinite loop, so do nothing here so we
+            // go to the next iteration of the loop
+            None => {}
+        };
     }
 }
 
-fn does_this_loop_infinitely_if_next_instruction_is_switched(
+fn accumulator_produced_by_altered_instructions_if_terminates(
     instructions: &[String],
     my_head: &Head,
-) -> bool {
+) -> Option<isize> {
     let mut new_head = my_head.clone();
     let mut first_time = true;
     loop {
         let cp = &new_head.current_position;
-        if cp >= &instructions.len() {
-            // terminates correctly
-            return false;
-        }
         let operation = split_and_vectorize(&instructions[*cp], " ")[0].to_string();
         let operation = if first_time && operation == "nop" {
             first_time = false;
@@ -69,13 +66,13 @@ fn does_this_loop_infinitely_if_next_instruction_is_switched(
             split_and_vectorize(&instructions[new_head.current_position as usize], " ")[1]
                 .parse()
                 .unwrap();
-        println!("About to execute {} {}", operation, argument);
+        // println!("About to execute {} {}", operation, argument);
         new_head = execute(operation, argument, new_head);
-        println!("Current position is {}", new_head.current_position);
-        println!("Accumulator is {}", new_head.accumulator);
-        if new_head.current_position > instructions.len() {
+        // println!("Current position is {}", new_head.current_position);
+        // println!("Accumulator is {}", new_head.accumulator);
+        if new_head.current_position >= instructions.len() {
             // terminates correctly
-            return false;
+            return Some(new_head.accumulator);
         }
         if new_head
             .trail_of_positions
@@ -83,33 +80,8 @@ fn does_this_loop_infinitely_if_next_instruction_is_switched(
         {
             // we've looped around to this current positioan again,
             // thus we are in an infinite loop
-            return true;
+            return None;
         }
-    }
-}
-
-// thought i'd need to  use this??
-fn _finish_this_program(instructions: &[String], my_head: &Head) -> isize {
-    println!(
-        "Made it to finish_this_program. Acc is {}",
-        my_head.accumulator
-    );
-    let mut new_head = my_head.clone();
-    loop {
-        let cp = &new_head.current_position;
-        if cp >= &instructions.len() {
-            println!("Here");
-            return new_head.accumulator;
-        }
-        let operation = split_and_vectorize(&instructions[*cp], " ")[0].to_string();
-        let argument: isize =
-            split_and_vectorize(&instructions[new_head.current_position as usize], " ")[1]
-                .parse()
-                .unwrap();
-        println!("About to execute {} {}", operation, argument);
-        new_head = execute(operation, argument, new_head);
-        println!("Current position is {}", new_head.current_position);
-        println!("Accumulator is {}", new_head.accumulator);
     }
 }
 
