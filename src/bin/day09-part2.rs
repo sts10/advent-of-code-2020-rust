@@ -11,8 +11,8 @@ fn main() {
         for slice in numbers.windows(width) {
             if slice.iter().sum::<usize>() == target_sum {
                 println!("slice is {:?}", slice);
-                let slice_max = slice.iter().max_by(|a, b| a.cmp(b)).unwrap();
-                let slice_min = slice.iter().min_by(|a, b| a.cmp(b)).unwrap();
+                let slice_min = slice.iter().min().unwrap();
+                let slice_max = slice.iter().max().unwrap();
                 println!("part 2 ans is {}", slice_min + slice_max);
                 break 'outer;
             }
