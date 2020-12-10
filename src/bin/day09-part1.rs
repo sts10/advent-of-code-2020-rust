@@ -8,19 +8,13 @@ fn main() {
         "Answer to part one is {}",
         find_first_invalid_number(numbers, preamble).unwrap()
     );
-    // let numbers: Vec<usize> = vec![
-    //     35, 20, 15, 25, 47, 40, 62, 55, 65, 95, 102, 117, 150, 182, 127, 219, 299, 277, 309, 576,
-    // ];
-    // let preamble = 5;
 }
 
 fn find_first_invalid_number(numbers: Vec<usize>, preamble: usize) -> Option<usize> {
-    for (i, n) in numbers.iter().enumerate() {
-        if i < preamble {
-            continue;
-        }
-        println!("n is {}; and current_position is {}", n, i);
-        if is_this_n_valid(i, *n, &numbers, preamble) == false {
+    for (i, n) in numbers[preamble..numbers.len()].iter().enumerate() {
+        let current_position = i + preamble;
+        println!("n is {}; and current_position is {}", n, current_position);
+        if is_this_n_valid(current_position, *n, &numbers, preamble) == false {
             println!("First invalid I found: {}", n);
             return Some(*n);
         }
