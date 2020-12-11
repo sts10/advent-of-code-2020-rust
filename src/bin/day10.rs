@@ -1,19 +1,29 @@
 use advent_of_code_2020::read_by_line;
 
 fn main() {
-    // let file_name = "inputs/day10.txt";
-    // let mut joltage_ratings: Vec<usize> = read_by_line(file_name).unwrap();
-    let mut joltage_ratings: Vec<usize> = vec![16, 10, 15, 5, 1, 11, 7, 19, 6, 12, 4];
+    let file_name = "inputs/day10.txt";
+    let mut joltage_ratings: Vec<usize> = read_by_line(file_name).unwrap();
+    // example joltage_ratings
+    // let mut joltage_ratings: Vec<usize> = vec![16, 10, 15, 5, 1, 11, 7, 19, 6, 12, 4];
 
     joltage_ratings.sort();
-    // println!("Answer to part 1 is {}", solve_part_1(joltage_ratings));
-    println!(
-        "Answer to part 2 is {}",
-        count_higher_roads_not_taken(joltage_ratings)
-    );
+    println!("Answer to part 1 is {}", solve_part_1(joltage_ratings));
+    // println!(
+    //     "Answer to part 2 is {}",
+    //     count_higher_roads_not_taken(joltage_ratings)
+    // );
 }
 
-fn count_higher_roads_not_taken(joltage_ratings: Vec<usize>) -> usize {
+// For Part 2? Though it's probably wrong. I don't know how to appraoch Part 2 tbh
+fn _count_higher_roads_not_taken(joltage_ratings: Vec<usize>) -> usize {
+    // (0), 1, 4, 5, 6, 7, 10, 11, 12, 15, 16, 19, (22)
+    // (0), 1, 4, 5, 6, 7, 10,     12, 15, 16, 19, (22)
+    // (0), 1, 4, 5,    7, 10, 11, 12, 15, 16, 19, (22)
+    // (0), 1, 4, 5,    7, 10,     12, 15, 16, 19, (22)
+    // (0), 1, 4,    6, 7, 10, 11, 12, 15, 16, 19, (22)
+    // (0), 1, 4,    6, 7, 10,     12, 15, 16, 19, (22)
+    // (0), 1, 4,       7, 10, 11, 12, 15, 16, 19, (22)
+    // (0), 1, 4,       7, 10,     12, 15, 16, 19, (22)
     let mut vector_of_number_of_higher_forks_not_taken: Vec<usize> = vec![];
     for (i, _joltage) in joltage_ratings.iter().enumerate() {
         // let _next_three_joltages = vec![
