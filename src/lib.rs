@@ -22,7 +22,7 @@ pub fn read_by_line<T: FromStr>(file_path: &str) -> io::Result<Vec<T>> {
             Err(_e) => {
                 // this is definitely not great, but the Error generated here is of type FromStr, rather than io, so
                 // it'd be difficult to return
-                panic!("Error reading a line of the file");
+                panic!("Error reading or parsing a line of the file. Be sure you're reading into a Vector of the proper type.");
             }
         }
     }
