@@ -1,6 +1,7 @@
 use advent_of_code_2020::read_by_line;
 // use std::fmt;
 
+#[derive(Debug)]
 struct Instruction {
     category: Category,
     direction: Direction,
@@ -25,7 +26,7 @@ enum Direction {
     West,
 }
 
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Debug)]
 enum Category {
     Turn,         // if direction == Direction::Right or Left
     ForwardMove,  // if direction == Direction::Forward
@@ -35,10 +36,10 @@ enum Category {
 fn main() {
     let file_name = "inputs/day12.txt";
     let instructions: Vec<String> = read_by_line(file_name).unwrap();
-    // let instructions: Vec<String> = vec!["F10", "N3", "F7", "R90", "F11"]
-    //     .iter()
-    //     .map(|s| s.to_string())
-    //     .collect();
+    // let instructions: Vec<String> = vec!["F10", "N3", "F7", "L270", "F11"]
+    // .iter()
+    // .map(|s| s.to_string())
+    // .collect();
     let mut current_position = Position {
         direction_facing: Direction::East, // The ship starts by facing east.
         latitude: 0,
@@ -57,7 +58,7 @@ fn main() {
     println!(
         "So answer to part 1 is {}",
         current_position.latitude.abs() + current_position.longitude.abs()
-    ); // 921 is too low!
+    ); // 921 is too low! And 1937 is too high!
 }
 
 fn make_struct(instruction_as_string: String) -> Instruction {
@@ -178,14 +179,33 @@ fn execute_turn(instruction: Instruction, current_position: Position) -> Positio
         Direction::North => 3,
         _ => panic!("Don't know which way I'm facing before making a turn"),
     };
-    let this_instruction_as_int = instruction.value / 90;
-    let new_direction_facing = match (currently_facing + this_instruction_as_int) % 4 {
+
+    // I started facing East, and was told to Instruction { category: Turn, direction: Left, value: 270 }. Now facing North
+    // I started facing East, and was told to Instruction { category: Turn, direction: Left, value: 180 }. Now facing East
+    //
+    // OMG I literally could not work out the logic of Left turns here. I gave up and made a
+    // seperate arm for the 180 turns
+    let this_instruction_as_int = if instruction.value == 180 {
+        2
+    } else {
+        match instruction.direction {
+            Direction::Right => instruction.value / 90,
+            Direction::Left => (instruction.value + 180) / 90,
+            _ => panic!("Turning neither left nor right"),
+        }
+    };
+
+    let new_direction_facing = match (currently_facing + this_instruction_as_int).abs() % 4 {
         0 => Direction::East,
         1 => Direction::South,
         2 => Direction::West,
         3 => Direction::North,
         _ => panic!("Don't know which way I'm facing before making a turn"),
     };
+    println!(
+        "I started facing {:?}, and was told to {:?}. Now facing {:?}",
+        current_position.direction_facing, instruction, new_direction_facing
+    );
     Position {
         direction_facing: new_direction_facing,
         latitude: current_position.latitude,
